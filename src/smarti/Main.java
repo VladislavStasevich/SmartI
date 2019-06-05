@@ -1,19 +1,17 @@
 package smarti;
 
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
+import view.Page;
+import view.Screen;
 
 public class Main extends Application {
 
     @Override
-    public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
-        primaryStage.setTitle("SmartI");
-        primaryStage.setScene(new Scene(root));
-        primaryStage.show();
+    public void start(Stage primaryStage) {
+        Screen.initStage(primaryStage);
+        Screen.switchTo(Page.SIGN_UP);
+        Screen.setTitle("SmartI");
     }
 
 
