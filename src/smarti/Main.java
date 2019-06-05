@@ -2,8 +2,6 @@ package smarti;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
-import view.Page;
-import view.Screen;
 
 public class Main extends Application {
 

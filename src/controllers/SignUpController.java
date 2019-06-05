@@ -1,4 +1,4 @@
-package smarti;
+package controllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -8,8 +8,9 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Window;
 import models.Employee;
+import smarti.*;
 
-public class Controller {
+public class SignUpController {
     @FXML
     private TextField emailField;
 
@@ -35,7 +36,11 @@ public class Controller {
         try {
             Employee e = Database.getEmployeeByLogin(emailField.getText());
             if (passwordField.getText().equals(e.getPassword())) {
-                AlertHelper.showAlert(Alert.AlertType.INFORMATION, owner, "Login success!", String.format("%s", e));
+                if (e.getRole() == EmployeeRole.ADMIN.getRole()) {
+                    Screen.switchTo(Page.ADMIN_PANEL);
+                } else {
+                    Screen.switchTo(Page.DASHBOARD);
+                }
             } else {
                 throw new Exception();
             }

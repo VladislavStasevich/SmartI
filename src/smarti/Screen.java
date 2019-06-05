@@ -1,7 +1,6 @@
-package view;
+package smarti;
 
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
@@ -16,8 +15,7 @@ public class Screen {
     }
 
     private static void setStage(Stage stage, URL url) throws IOException {
-        Parent root = FXMLLoader.load(url);
-        stage.setScene(new Scene(root));
+        stage.setScene(new Scene(FXMLLoader.load(url)));
         stage.show();
     }
 

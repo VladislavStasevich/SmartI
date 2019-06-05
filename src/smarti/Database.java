@@ -8,7 +8,7 @@ import java.util.List;
 
 public class Database {
     private static Connection connection = null;
-    private static String dbPath = "jdbc:sqlite:E:\\Soft\\sqlite3\\test.db";
+    private static String dbPath = "jdbc:sqlite:E:\\\\smarti\\СПП\\test.db";
 
     public static void connect() throws SQLException {
         if (connection == null) {
