@@ -57,4 +57,13 @@ public class Database {
         }
         return null;
     }
+
+    public static byte[] getFileByUserId(int userId) throws SQLException {
+        ResultSet rs = execute(String.format("SELECT image FROM Avatar where ID = %d", userId));
+        while (rs.next()) {
+            byte[] my = rs.getBytes("image");
+            return my;
+        }
+        return null;
+    }
 }

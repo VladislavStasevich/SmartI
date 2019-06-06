@@ -26,7 +26,6 @@ public class Screen {
     public static void switchTo(Page page) {
         try {
             setStage(applicationStage, Screen.class.getResource(page.getPage()));
-            setStage(applicationStage, Screen.class.getResource(page.getPage()));
         } catch (Exception e) {
             e.printStackTrace();
         }
