@@ -34,13 +34,10 @@ public class SignUpController {
         }
 
         try {
-            Employee e = Database.getEmployeeByLogin(emailField.getText());
-            if (passwordField.getText().equals(e.getPassword())) {
-                if (e.getRole() == EmployeeRole.ADMIN.getRole()) {
-                    Screen.switchTo(Page.ADMIN_PANEL);
-                } else {
-                    Screen.switchTo(Page.DASHBOARD);
-                }
+            Employee currentEmployee = Database.getEmployeeByLogin(emailField.getText());
+            if (passwordField.getText().equals(currentEmployee.getPassword())) {
+                Context.currentEmployee = currentEmployee;
+                Screen.switchTo(Page.DASHBOARD);
             } else {
                 throw new Exception();
             }
