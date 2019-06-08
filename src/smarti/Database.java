@@ -1,6 +1,7 @@
 package smarti;
 
 import models.Employee;
+import dao.TableEmployee;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -27,16 +28,23 @@ public class Database {
         return stmt.getResultSet();
     }
 
-    private static Employee fillEmployee(ResultSet rs) throws SQLException {
-        Employee e = new Employee();
-        e.setId(rs.getInt("id"));
-        e.setRole(rs.getInt("role"));
-        e.setFirst_name(rs.getString("first_name"));
-        e.setLast_name(rs.getString("last_name"));
-        e.setMiddle_name(rs.getString("middle_name"));
-        e.setLogin(rs.getString("login"));
-        e.setPassword(rs.getString("password"));
-        return e;
+    public static List<TableEmployee> getTableEmployee() throws SQLException {
+        List<TableEmployee> array = new ArrayList<>();
+        ResultSet rs = execute("select image, first_name, middle_name, last_name, role " +
+                "from Employee e left join Avatar a " +
+                "on e.id == a.id;");
+
+        while (rs.next()) {
+            array.add(new TableEmployee(
+                    rs.getBytes("image"),
+                    rs.getString("first_name"),
+                    rs.getString("middle_name"),
+                    rs.getString("last_name"),
+                    rs.getString("role")
+            ));
+        }
+
+        return array;
     }
 
     public static List<Employee> getEmployees() throws SQLException {
@@ -44,7 +52,13 @@ public class Database {
         ResultSet rs = execute("SELECT * FROM Employee");
 
         while (rs.next()) {
-            array.add(fillEmployee(rs));
+            array.add(new Employee(rs.getInt("id"),
+                    rs.getInt("role"),
+                    rs.getString("first_name"),
+                    rs.getString("last_name"),
+                    rs.getString("middle_name"),
+                    rs.getString("login"),
+                    rs.getString("password")));
         }
 
         return array;
@@ -52,17 +66,22 @@ public class Database {
 
     public static Employee getEmployeeByLogin(String login) throws SQLException  {
         ResultSet rs = execute(String.format("SELECT * FROM Employee where LOGIN = '%s'", login));
-        while (rs.next()) {
-            return fillEmployee(rs);
+        if (rs.next()) {
+            return new Employee(rs.getInt("id"),
+                    rs.getInt("role"),
+                    rs.getString("first_name"),
+                    rs.getString("last_name"),
+                    rs.getString("middle_name"),
+                    rs.getString("login"),
+                    rs.getString("password"));
         }
         return null;
     }
 
     public static byte[] getFileByUserId(int userId) throws SQLException {
         ResultSet rs = execute(String.format("SELECT image FROM Avatar where ID = %d", userId));
-        while (rs.next()) {
-            byte[] my = rs.getBytes("image");
-            return my;
+        if (rs.next()) {
+            return rs.getBytes("image");
         }
         return null;
     }

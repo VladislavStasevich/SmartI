@@ -3,69 +3,55 @@ package models;
 public class Employee {
     private int id;
     private int role;
-    private String first_name;
-    private String last_name;
-    private String middle_name;
+    private String firstName;
+    private String lastName;
+    private String middleName;
     private String login;
     private String password;
 
-    public int getId() {
-        return id;
+    public Employee(int id, int role, String firstName, String lastName, String middleName, String login, String password) {
+        this.id = id;
+        this.role = role;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.middleName = middleName;
+        this.login = login;
+        this.password = password;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public int getId() {
+        return id;
     }
 
     public int getRole() {
         return role;
     }
 
-    public void setRole(int role) {
-        this.role = role;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public String getFirst_name() {
-        return first_name;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setFirst_name(String first_name) {
-        this.first_name = first_name;
-    }
-
-    public String getLast_name() {
-        return last_name;
-    }
-
-    public void setLast_name(String last_name) {
-        this.last_name = last_name;
-    }
-
-    public String getMiddle_name() {
-        return middle_name;
-    }
-
-    public void setMiddle_name(String middle_name) {
-        this.middle_name = middle_name;
+    public String getMiddleName() {
+        return middleName;
     }
 
     public String getLogin() {
         return login;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
-    }
-
     public String getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public String toString() {
+        return String.format("Employee(%d: %s %s)", id, firstName, lastName);
     }
 
-    public String toString() {
-        return String.format("Employee(%d: %s %s)", id, first_name, last_name);
+    public String toFirstAndLastName() {
+        return String.format("%s %s", firstName, lastName);
     }
 }
