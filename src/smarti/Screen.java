@@ -2,6 +2,7 @@ package smarti;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -12,6 +13,8 @@ public class Screen {
 
     public static void initStage(Stage stage) {
         applicationStage = stage;
+        stage.setResizable(false);
+        stage.getIcons().add(new Image(Screen.class.getResourceAsStream("/smarti.png")));
     }
 
     private static void setStage(Stage stage, URL url) throws IOException {

@@ -5,14 +5,12 @@ import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Label;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.Image;
 import dao.TableEmployee;
+import javafx.scene.text.Text;
 import smarti.Context;
 import smarti.Database;
 import smarti.Page;
@@ -34,6 +32,12 @@ public class DashboardController implements Initializable {
     private Tab catalog;
 
     @FXML
+    private ComboBox catalogManufacturer;
+
+    @FXML
+    private ComboBox catalogModel;
+
+    @FXML
     private Tab checklist;
 
     @FXML
@@ -45,6 +49,7 @@ public class DashboardController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         initMainPanel();
+        initCatalogTab();
         initEmployeeTab();
     }
 
@@ -65,6 +70,11 @@ public class DashboardController implements Initializable {
         if (Context.currentEmployee.getRole() == 0) {
             employees.setDisable(false);
         }
+    }
+
+    private void initCatalogTab() {
+        catalogManufacturer.setPromptText("Test");
+        catalogManufacturer.getItems().addAll(new Text("Test"), new Text("Test 2"));
     }
 
     public void logout(ActionEvent e) {
@@ -97,5 +107,9 @@ public class DashboardController implements Initializable {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+    }
+
+    public void onAddNewDevice(Event e) {
+        Screen.switchTo(Page.ADD_NEW_DEVICE);
     }
 }
