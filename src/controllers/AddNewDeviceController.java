@@ -1,7 +1,6 @@
 package controllers;
 
 import dao.NewDevice;
-import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextArea;
@@ -53,13 +52,15 @@ public class AddNewDeviceController implements Initializable {
         this.imagePath = imagePath;
     }
 
-    public void onImageViewMouseClick(Event e) {
+    public void onImageViewMouseClick() {
         String imagePath = ImageFileChooser.getImageFilePath();
-        phoneImage.setImage(new Image(imagePath));
-        this.imagePath = imagePath;
+        if (!imagePath.equals("")) {
+            phoneImage.setImage(new Image(imagePath));
+            this.imagePath = imagePath;
+        }
     }
 
-    public void onSubmit(Event e) throws IOException, SQLException, URISyntaxException {
+    public void onSubmit() throws IOException, SQLException, URISyntaxException {
         byte[] fileContent = Files.readAllBytes(Paths.get(new URI(imagePath)));
 
         NewDevice device = new NewDevice(
@@ -72,6 +73,10 @@ public class AddNewDeviceController implements Initializable {
 
         Database.addNewDevice(device);
 
+        Screen.switchTo(Page.DASHBOARD);
+    }
+
+    public void onCancel() {
         Screen.switchTo(Page.DASHBOARD);
     }
 

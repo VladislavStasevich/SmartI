@@ -37,7 +37,7 @@
     </HBox>
     <TabPane tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
         <tabs>
-            <Tab fx:id="catalog" closable="false" text="Каталог">
+            <Tab closable="false" text="Каталог">
                 <content>
                     <AnchorPane>
                         <children>
@@ -54,7 +54,7 @@
                                         <children>
                                             <AnchorPane>
                                                 <children>
-                                                    <Label layoutX="213.0" layoutY="12.0" prefHeight="4.0" prefWidth="174.0" text="Оформление покупки товара">
+                                                    <Label layoutX="102.0" layoutY="12.0" prefHeight="25.0" prefWidth="285.0" text="Оформление покупки товара">
                                                         <font>
                                                             <Font name="System Bold" size="12.0" />
                                                         </font>
@@ -86,32 +86,27 @@
                                                     <Label text="Данные паспорта" GridPane.halignment="RIGHT" GridPane.rowIndex="4" />
                                                     <Label text="Модель смартфона" GridPane.halignment="RIGHT" GridPane.rowIndex="5" />
                                                     <Label text="Производитель смартфона" GridPane.halignment="RIGHT" GridPane.rowIndex="6" />
-                                                    <TextField prefHeight="25.0" prefWidth="898.0" GridPane.columnIndex="1" />
-                                                    <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                                    <TextField GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                                    <TextField GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                                                    <TextField GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                                                    <TextField GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                                                    <TextField GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                                                    <TextField fx:id="checkListLastName" prefHeight="25.0" prefWidth="898.0" GridPane.columnIndex="1" />
+                                                    <TextField fx:id="checkListFirstName" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                    <TextField fx:id="checkListMiddleName" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                    <TextField fx:id="checkListAddress" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                                    <TextField fx:id="checkListPassport" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                                    <TextField fx:id="checkListModel" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                                    <TextField fx:id="checkListManufacturer" GridPane.columnIndex="1" GridPane.rowIndex="6" />
                                                 </children>
-                                    <VBox.margin>
-                                       <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
-                                    </VBox.margin>
+                                                <VBox.margin>
+                                                    <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                                </VBox.margin>
                                             </GridPane>
-                                 <AnchorPane prefHeight="200.0" prefWidth="200.0">
-                                    <children>
-                                       <Button mnemonicParsing="false" prefHeight="32.0" prefWidth="130.0" text="Сохранить" AnchorPane.bottomAnchor="8.0" AnchorPane.rightAnchor="8.0" />
-                                    </children>
-                                 </AnchorPane>
+                                            <AnchorPane prefHeight="273.0" prefWidth="400.0">
+                                                <children>
+                                                    <Button fx:id="checkListSave" mnemonicParsing="false" onAction="#onCheckListSave" prefHeight="32.0" prefWidth="130.0" text="Сохранить" AnchorPane.bottomAnchor="8.0" AnchorPane.rightAnchor="8.0" />
+                                                </children>
+                                            </AnchorPane>
                                         </children>
                                     </VBox>
                                     <VBox>
                                         <children>
-                                            <TextField maxWidth="1000.0">
-                                                <VBox.margin>
-                                                    <Insets left="8.0" right="8.0" top="8.0" />
-                                                </VBox.margin>
-                                            </TextField>
                                             <GridPane alignment="CENTER" hgap="8.0" vgap="8.0">
                                                 <columnConstraints>
                                                     <ColumnConstraints hgrow="SOMETIMES" maxWidth="270.0" minWidth="178.0" prefWidth="179.0" />
@@ -120,23 +115,38 @@
                                                 <rowConstraints>
                                                     <RowConstraints vgrow="SOMETIMES" />
                                                     <RowConstraints vgrow="SOMETIMES" />
-                                       <RowConstraints />
+                                                    <RowConstraints />
                                                 </rowConstraints>
                                                 <children>
                                                     <Label text="Производитель" GridPane.columnIndex="0" GridPane.halignment="CENTER" />
                                                     <Label text="Модель" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
-                                       <ComboBox fx:id="catalogManufacturer" prefHeight="25.0" prefWidth="189.0" GridPane.rowIndex="1" />
-                                       <ComboBox fx:id="catalogModel" prefHeight="25.0" prefWidth="205.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                    <ComboBox fx:id="catalogManufacturer" onAction="#onManufacturerAction" prefHeight="25.0" prefWidth="189.0" GridPane.rowIndex="1" />
+                                                    <ComboBox fx:id="catalogModel" onAction="#onModelAction" prefHeight="25.0" prefWidth="205.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                                 </children>
-                                    <VBox.margin>
-                                       <Insets left="8.0" right="8.0" top="8.0" />
-                                    </VBox.margin>
+                                                <VBox.margin>
+                                                    <Insets left="8.0" right="8.0" top="8.0" />
+                                                </VBox.margin>
                                             </GridPane>
-                                 <Button mnemonicParsing="false" onAction="#onAddNewDevice" text="Добавить новое устройство" />
+                                            <ImageView fx:id="catalogImage" fitHeight="206.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                                                <VBox.margin>
+                                                    <Insets left="91.0" />
+                                                </VBox.margin>
+                                            </ImageView>
+                                            <Label fx:id="catalogDescription" alignment="CENTER" prefHeight="188.0" prefWidth="384.0" textAlignment="CENTER" wrapText="true" />
+                                 <Label fx:id="catalogPrice" alignment="CENTER" prefHeight="43.0" prefWidth="384.0">
+                                    <font>
+                                       <Font name="System Bold" size="12.0" />
+                                    </font>
+                                 </Label>
+                                            <Button fx:id="catalogAddNewDevice" mnemonicParsing="false" onAction="#onAddNewDevice" text="Добавить новое устройство">
+                                                <VBox.margin>
+                                                    <Insets left="100.0" />
+                                                </VBox.margin>
+                                            </Button>
                                         </children>
-                              <GridPane.margin>
-                                 <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
-                              </GridPane.margin>
+                                        <GridPane.margin>
+                                            <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                        </GridPane.margin>
                                     </VBox>
                                 </children>
                             </GridPane>
@@ -144,11 +154,29 @@
                     </AnchorPane>
                 </content>
             </Tab>
-            <Tab fx:id="checklist" closable="false" text="Чеки оплат">
+            <Tab closable="false" onSelectionChanged="#onCheckListChanged" text="Чеки оплат">
                 <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                         <children>
-                            <Label text="Check list" />
+                            <TableView fx:id="checkListTable" prefHeight="538.0" prefWidth="800.0">
+                                <columns>
+                                    <TableColumn prefWidth="142.0" text="Фамилия">
+                                        <properties name="lastName" />
+                                    </TableColumn>
+                                    <TableColumn minWidth="8.0" prefWidth="143.0" text="Имя">
+                                        <properties name="firstName" />
+                                    </TableColumn>
+                                    <TableColumn prefWidth="127.0" text="Отчество">
+                                        <properties name="middleName" />
+                                    </TableColumn>
+                                    <TableColumn prefWidth="223.0" text="Адрес">
+                                        <properties name="address" />
+                                    </TableColumn>
+                                    <TableColumn minWidth="0.0" prefWidth="144.0" text="Пасспорт">
+                                        <properties name="passport" />
+                                    </TableColumn>
+                                </columns>
+                            </TableView>
                         </children>
                     </AnchorPane>
                 </content>
@@ -159,11 +187,21 @@
                         <children>
                             <TableView fx:id="employeeTable" prefHeight="400.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                 <columns>
-                                    <TableColumn fx:id="picture" editable="false" maxWidth="40.0" minWidth="40.0" prefWidth="40.0" />
-                                    <TableColumn fx:id="firstName" editable="false" maxWidth="200.0" minWidth="64.0" prefWidth="128.0" text="Имя" />
-                                    <TableColumn fx:id="middleName" editable="false" maxWidth="200.0" minWidth="64.0" prefWidth="128.0" text="Отчество" />
-                                    <TableColumn fx:id="lastName" editable="false" maxWidth="200.0" minWidth="64.0" prefWidth="128.0" text="Фамилия" />
-                                    <TableColumn fx:id="role" editable="false" maxWidth="200.0" minWidth="64.0" prefWidth="128.0" text="Роль" />
+                                    <TableColumn editable="false" maxWidth="40.0" minWidth="40.0" prefWidth="40.0">
+                                        <properties name="picture" />
+                                    </TableColumn>
+                                    <TableColumn editable="false" maxWidth="200.0" minWidth="64.0" prefWidth="128.0" text="Имя">
+                                        <properties name="firstName" />
+                                    </TableColumn>
+                                    <TableColumn editable="false" maxWidth="200.0" minWidth="64.0" prefWidth="128.0" text="Отчество">
+                                        <properties name="middleName" />
+                                    </TableColumn>
+                                    <TableColumn editable="false" maxWidth="200.0" minWidth="64.0" prefWidth="128.0" text="Фамилия">
+                                        <properties name="lastName" />
+                                    </TableColumn>
+                                    <TableColumn editable="false" maxWidth="200.0" minWidth="64.0" prefWidth="128.0" text="Роль">
+                                        <properties name="role" />
+                                    </TableColumn>
                                 </columns>
                             </TableView>
                         </children>

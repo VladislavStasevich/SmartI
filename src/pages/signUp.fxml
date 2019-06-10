@@ -10,9 +10,10 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<GridPane alignment="center" hgap="10" minWidth="600.0" vgap="10" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.SignUpController">
+<GridPane alignment="center" hgap="10" minWidth="600.0" vgap="10" xmlns="http://javafx.com/javafx/8.0.172-ea"
+          xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.SignUpController">
     <padding>
-        <Insets bottom="40" left="40" right="40" top="40" />
+        <Insets bottom="40" left="40" right="40" top="40"/>
     </padding>
     <columnConstraints>
         <ColumnConstraints halignment="RIGHT" maxWidth="Infinity" minWidth="100" prefWidth="100">
@@ -21,41 +22,32 @@
         </ColumnConstraints>
     </columnConstraints>
 
-    <!-- Add Header Label -->
-    <Label text="SmartI Sign Up" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.rowSpan="1">
+    <Label text="SmartI Sign Up" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.halignment="CENTER"
+           GridPane.rowIndex="0" GridPane.rowSpan="1">
         <font>
-            <Font name="Arial" size="24" />
+            <Font name="Arial" size="24"/>
         </font>
         <GridPane.margin>
-            <Insets bottom="20" left="0" right="0" top="20" />
+            <Insets bottom="20" left="0" right="0" top="20"/>
         </GridPane.margin>
     </Label>
 
-    <!-- Add Email Label -->
-    <Label text="Login : " GridPane.columnIndex="0" GridPane.rowIndex="2">
-    </Label>
-    <!-- Add Email Text Field -->
-    <TextField fx:id="emailField" prefHeight="40" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-
-
-    <!-- Add Password Label -->
-    <Label text="Password : " GridPane.columnIndex="0" GridPane.rowIndex="3">
-    </Label>
-    <!-- Add Password Field -->
-    <PasswordField fx:id="passwordField" prefHeight="40" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-
-
-    <!-- Add Submit Button -->
-    <Button fx:id="submitButton" defaultButton="true" onAction="#handleSubmitButtonAction" prefHeight="40" prefWidth="100" text="Submit" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.rowSpan="1">
+    <Label text="Login : " GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+    <TextField fx:id="emailField" prefHeight="40" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+    <Label text="Password : " GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+    <PasswordField fx:id="passwordField" prefHeight="40" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+    <Button fx:id="submitButton" defaultButton="true" onAction="#handleSubmitButtonAction" prefHeight="40"
+            prefWidth="100" text="Submit" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.halignment="CENTER"
+            GridPane.rowIndex="4" GridPane.rowSpan="1">
         <GridPane.margin>
-            <Insets bottom="20" left="0" right="0" top="20" />
+            <Insets bottom="20" left="0" right="0" top="20"/>
         </GridPane.margin>
     </Button>
-   <rowConstraints>
-      <RowConstraints />
-      <RowConstraints />
-      <RowConstraints />
-      <RowConstraints />
-      <RowConstraints />
-   </rowConstraints>
+    <rowConstraints>
+        <RowConstraints/>
+        <RowConstraints/>
+        <RowConstraints/>
+        <RowConstraints/>
+        <RowConstraints/>
+    </rowConstraints>
 </GridPane>

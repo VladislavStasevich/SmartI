@@ -1,6 +1,5 @@
 package controllers;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -21,7 +20,7 @@ public class SignUpController {
     private Button submitButton;
 
     @FXML
-    protected void handleSubmitButtonAction(ActionEvent event) {
+    protected void handleSubmitButtonAction() {
         Window owner = submitButton.getScene().getWindow();
         if(emailField.getText().isEmpty()) {
             AlertHelper.showAlert(Alert.AlertType.ERROR, owner, "Form Error!",

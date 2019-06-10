@@ -3,6 +3,7 @@ package smarti;
 import dao.NewDevice;
 import models.Employee;
 import dao.TableEmployee;
+import models.TableCheck;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -29,20 +30,43 @@ public class Database {
         return stmt.getResultSet();
     }
 
-    public static List<TableEmployee> getTableEmployee() throws SQLException {
+    public static List<TableEmployee> getTableEmployee() {
         List<TableEmployee> array = new ArrayList<>();
-        ResultSet rs = getExecute("select image, first_name, middle_name, last_name, role " +
-                "from Employee e left join Avatar a " +
-                "on e.id == a.id;");
+        try {
+            ResultSet rs = getExecute("select image, first_name, middle_name, last_name, role " +
+                    "from Employee e left join Avatar a " +
+                    "on e.id == a.id;");
+            while (rs.next()) {
+                array.add(new TableEmployee(
+                        rs.getBytes("image"),
+                        rs.getString("first_name"),
+                        rs.getString("middle_name"),
+                        rs.getString("last_name"),
+                        rs.getString("role")
+                ));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
-        while (rs.next()) {
-            array.add(new TableEmployee(
-                    rs.getBytes("image"),
-                    rs.getString("first_name"),
-                    rs.getString("middle_name"),
-                    rs.getString("last_name"),
-                    rs.getString("role")
-            ));
+        return array;
+    }
+
+    public static List<TableCheck> getTableCheck() {
+        List<TableCheck> array = new ArrayList<>();
+        try {
+            ResultSet rs = getExecute("SELECT first_name, middle_name, last_name, address, passport FROM \"Check\"");
+            while (rs.next()) {
+                array.add(new TableCheck(
+                        rs.getString("last_name"),
+                        rs.getString("first_name"),
+                        rs.getString("middle_name"),
+                        rs.getString("address"),
+                        rs.getString("passport")
+                ));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
 
         return array;
@@ -50,16 +74,14 @@ public class Database {
 
     public static Employee getEmployeeByLogin(String login) throws SQLException  {
         ResultSet rs = getExecute(String.format("SELECT * FROM Employee where LOGIN = '%s'", login));
-        if (rs.next()) {
-            return new Employee(rs.getInt("id"),
-                    rs.getInt("role"),
-                    rs.getString("first_name"),
-                    rs.getString("last_name"),
-                    rs.getString("middle_name"),
-                    rs.getString("login"),
-                    rs.getString("password"));
-        }
-        return null;
+        rs.next();
+        return new Employee(rs.getInt("id"),
+                rs.getInt("role"),
+                rs.getString("first_name"),
+                rs.getString("last_name"),
+                rs.getString("middle_name"),
+                rs.getString("login"),
+                rs.getString("password"));
     }
 
     public static byte[] getFileByUserId(int userId) throws SQLException {
@@ -68,6 +90,54 @@ public class Database {
             return rs.getBytes("image");
         }
         return null;
+    }
+
+    public static List<String> getManufacturers() {
+        List<String> models = new ArrayList<>();
+        try {
+            ResultSet rs = getExecute("SELECT DISTINCT manufacturer FROM Catalog");
+            while (rs.next()) {
+                models.add(rs.getString("manufacturer"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return models;
+    }
+
+    public static List<String> getModelsByManufacturer(String manufacturer) {
+        List<String> models = new ArrayList<>();
+        try {
+            ResultSet rs = getExecute(
+                    String.format("SELECT DISTINCT model FROM Catalog where manufacturer = '%s'", manufacturer)
+            );
+            while (rs.next()) {
+                models.add(rs.getString("model"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return models;
+    }
+
+    public static NewDevice getSmartphoneByManufacturerAndModel(String manufacturer, String model) {
+        try {
+            ResultSet rs = getExecute(String.format(
+                    "SELECT description, image, price FROM Catalog where manufacturer = '%s' AND model = '%s'",
+                    manufacturer, model
+            ));
+            rs.next();
+            return new NewDevice(
+                    rs.getBytes("image"),
+                    manufacturer,
+                    model,
+                    rs.getString("description"),
+                    rs.getDouble("price")
+            );
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new IllegalArgumentException(String.format("Could not find '%s' with model '%s'", manufacturer, model));
+        }
     }
 
     public static void addNewDevice(NewDevice device) throws SQLException {
@@ -79,6 +149,21 @@ public class Database {
         stmt.setString(3, device.getDescription());
         stmt.setDouble(4, device.getPrice());
         stmt.setBytes(5, device.getImage());
+        stmt.executeUpdate();
+    }
+
+    public static void addNewOffer(String lastName, String firstName, String middleName, String address, String passport, String model, String manufacturer) throws SQLException {
+        String sql = "INSERT INTO \"Check\" (first_name, middle_name, last_name, address, passport, smartphone_id) " +
+                "VALUES (?, ?, ?, ?, ?, (SELECT id FROM Catalog where model = ? AND manufacturer = ?));";
+        connect();
+        PreparedStatement stmt = connection.prepareStatement(sql);
+        stmt.setString(1, lastName);
+        stmt.setString(2, firstName);
+        stmt.setString(3, middleName);
+        stmt.setString(4, address);
+        stmt.setString(5, passport);
+        stmt.setString(6, model);
+        stmt.setString(7, manufacturer);
         stmt.executeUpdate();
     }
 }

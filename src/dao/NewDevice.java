@@ -14,7 +14,7 @@ public class NewDevice {
         this.description = description;
         this.price = price;
 
-        if (image == null || manufacturer.equals("") || model.equals("")) throw new RuntimeException();
+        if (image == null || manufacturer.equals("") || model.equals("")) throw new IllegalArgumentException();
     }
 
     public byte[] getImage() {
