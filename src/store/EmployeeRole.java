@@ -1,8 +1,7 @@
 package store;
 
 public enum EmployeeRole {
-    ADMIN(0),
-    USER(1);
+    ADMIN(0);
 
     private int role;
 

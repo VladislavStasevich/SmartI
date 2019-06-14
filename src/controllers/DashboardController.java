@@ -7,7 +7,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.Image;
-import models.TableItem;
+import models.TablePatient;
 import store.*;
 
 import java.net.URL;
@@ -25,7 +25,7 @@ public class DashboardController implements Initializable {
     private Tab employees;
 
     @FXML
-    private TableView<TableItem> checkListTable;
+    private TableView<TablePatient> checkListTable;
 
     @FXML
     private TableView<models.TableEmployee> employeeTable;
@@ -87,7 +87,7 @@ public class DashboardController implements Initializable {
         checkListTable.getItems().clear();
         checkListTable.getColumns().forEach(col ->
                 col.setCellValueFactory(new PropertyValueFactory<>((String)col.getProperties().get("name"))));
-        Database.getTableItems().forEach(tableItem -> checkListTable.getItems().add(tableItem));
+        Database.getTableItems().forEach(tablePatient -> checkListTable.getItems().add(tablePatient));
     }
 
     public void onAddNewItem() {
@@ -97,7 +97,7 @@ public class DashboardController implements Initializable {
     public void onMouseClickingByRow() {
         if (Context.currentEmployee.getRole() == EmployeeRole.ADMIN.getRole()) {
             try {
-                Context.currentItem = checkListTable.getItems().get(checkListTable.getSelectionModel().getSelectedIndex());
+                Context.currentPatient = checkListTable.getItems().get(checkListTable.getSelectionModel().getSelectedIndex());
                 Store.switchTo(Page.MODIFYY_ITEM);
             } catch(Exception ignored) {}
         }

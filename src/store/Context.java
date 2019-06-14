@@ -1,9 +1,9 @@
 package store;
 
 import models.Employee;
-import models.TableItem;
+import models.TablePatient;
 
 public class Context {
     public static Employee currentEmployee = null;
-    public static TableItem currentItem = null;
+    public static TablePatient currentPatient = null;
 }

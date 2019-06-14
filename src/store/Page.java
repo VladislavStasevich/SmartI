@@ -1,9 +1,9 @@
 package store;
 
 public enum Page {
-    ADD_NEW_ITEM("/pages/addNewItem.fxml"),
+    ADD_NEW_ITEM("/pages/addRecord.fxml"),
     SIGN_UP("/pages/signUp.fxml"),
-    MODIFYY_ITEM("/pages/modifyItem.fxml"),
+    MODIFYY_ITEM("/pages/modifyPatient.fxml"),
     DASHBOARD("/pages/dashboard.fxml");
 
     private String page;

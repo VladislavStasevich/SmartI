@@ -21,7 +21,7 @@
         </ColumnConstraints>
     </columnConstraints>
 
-    <Label text="Склад № 1" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.rowSpan="1">
+    <Label text="Поликлиника № 1337" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.rowSpan="1">
         <GridPane.margin>
             <Insets bottom="20" left="0" right="0" top="20" />
         </GridPane.margin>
@@ -34,7 +34,7 @@
     <TextField fx:id="emailField" prefHeight="40" GridPane.columnIndex="1" GridPane.rowIndex="2" />
     <Label text="Пароль" GridPane.columnIndex="0" GridPane.rowIndex="3" />
     <PasswordField fx:id="passwordField" prefHeight="40" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-    <Button fx:id="submitButton" onAction="#handleSubmitButtonAction" prefHeight="35.0" prefWidth="90.0" text="Войти" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.rowSpan="1">
+    <Button fx:id="submitButton" defaultButton="true" onAction="#handleSubmitButtonAction" prefHeight="35.0" prefWidth="90.0" text="Войти" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.rowSpan="1">
         <GridPane.margin>
             <Insets bottom="20" left="0" right="0" top="20" />
         </GridPane.margin>

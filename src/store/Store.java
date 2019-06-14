@@ -2,9 +2,9 @@ package store;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
-import javafx.scene.control.TextField;
-import javafx.scene.input.KeyEvent;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -14,21 +14,12 @@ public class Store extends Application {
 
     static private Stage applicationStage;
 
-    public static void consumeIfNotValidNumber(TextField element, KeyEvent event) {
-        if (!"1234567890.".contains(event.getCharacter())) {
-            event.consume();
-        }
-        if (element.getText().contains(".") && event.getCharacter().contentEquals(".")) {
-            event.consume();
-        }
-    }
-
     @Override
     public void start(Stage primaryStage) {
         applicationStage = primaryStage;
         primaryStage.setResizable(false);
         switchTo(Page.SIGN_UP);
-        applicationStage.setTitle("Склад № 1");
+        applicationStage.setTitle("Поликлиника № 1337");
     }
 
 
@@ -38,7 +29,16 @@ public class Store extends Application {
 
     private static void setStage(Stage stage, URL url) throws IOException {
         stage.setScene(new Scene(FXMLLoader.load(url)));
+        centerWindow(stage);
         stage.show();
+    }
+
+    private static void centerWindow(Stage stage) {
+        Rectangle2D bounds = Screen.getPrimary().getVisualBounds();
+        double centerX = bounds.getMinX() + (bounds.getWidth() - stage.getWidth()) * 1.0f / 2;
+        double centerY = bounds.getMinY() + (bounds.getHeight() - stage.getHeight()) * 1.0f / 3;
+        stage.setX(centerX);
+        stage.setY(centerY);
     }
 
     public static void switchTo(Page page) {
