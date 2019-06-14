@@ -1,20 +1,16 @@
 package controllers;
 
 import com.sun.xml.internal.messaging.saaj.util.ByteInputStream;
-import dao.NewDevice;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.Image;
-import javafx.stage.Window;
-import smarti.*;
-import utils.Assert;
+import models.TableItem;
+import store.*;
 
 import java.net.URL;
-import java.sql.SQLException;
-import java.util.List;
 import java.util.ResourceBundle;
 
 
@@ -26,60 +22,20 @@ public class DashboardController implements Initializable {
     private Label name;
 
     @FXML
-    private ComboBox<String> catalogManufacturer;
-
-    @FXML
-    private ComboBox<String> catalogModel;
-
-    @FXML
-    private ImageView catalogImage;
-
-    @FXML
-    private Label catalogDescription;
-
-    @FXML
-    private Label catalogPrice;
-
-    @FXML
-    private TextField checkListLastName;
-
-    @FXML
-    private TextField checkListFirstName;
-
-    @FXML
-    private TextField checkListMiddleName;
-
-    @FXML
-    private TextField checkListAddress;
-
-    @FXML
-    private TextField checkListPassport;
-
-    @FXML
-    private TextField checkListModel;
-
-    @FXML
-    private TextField checkListManufacturer;
-
-    @FXML
     private Tab employees;
 
     @FXML
-    private TableView<models.TableCheck> checkListTable;
+    private TableView<TableItem> checkListTable;
 
     @FXML
     private TableView<models.TableEmployee> employeeTable;
 
     @FXML
-    private Button checkListSave;
-
-    @FXML
-    private Button catalogAddNewDevice;
+    private Button catalogAddNewItem;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         initMainPanel();
-        initCatalogTab();
         initEmployeeTab();
     }
 
@@ -95,7 +51,7 @@ public class DashboardController implements Initializable {
         }
         name.setText(Context.currentEmployee.toFirstAndLastName());
         if (Context.currentEmployee.getRole() != EmployeeRole.ADMIN.getRole()) {
-            catalogAddNewDevice.setVisible(false);
+            catalogAddNewItem.setVisible(false);
         }
     }
 
@@ -105,15 +61,9 @@ public class DashboardController implements Initializable {
         }
     }
 
-    private void initCatalogTab() {
-        catalogManufacturer.setPromptText("Выберите производителя");
-        catalogModel.setPromptText("Выберите модель");
-        catalogManufacturer.getItems().addAll(Database.getManufacturers());
-    }
-
     public void logout() {
         Context.currentEmployee = null;
-        Screen.switchTo(Page.SIGN_UP);
+        Store.switchTo(Page.SIGN_UP);
     }
 
     public void onEmployeesChanged() {
@@ -136,53 +86,15 @@ public class DashboardController implements Initializable {
         checkListTable.getItems().clear();
         checkListTable.getColumns().forEach(col ->
                 col.setCellValueFactory(new PropertyValueFactory<>((String)col.getProperties().get("name"))));
-        Database.getTableCheck().forEach(tableCheck -> checkListTable.getItems().add(tableCheck));
+        Database.getTableItems().forEach(tableItem -> checkListTable.getItems().add(tableItem));
     }
 
-    public void onAddNewDevice() {
-        Screen.switchTo(Page.ADD_NEW_DEVICE);
+    public void onAddNewItem() {
+        Store.switchTo(Page.ADD_NEW_ITEM);
     }
 
-    public void onManufacturerAction() {
-        String selectedManufacturer = this.catalogManufacturer.getValue();
-        List<String> models = Database.getModelsByManufacturer(selectedManufacturer);
-        catalogImage.setImage(null);
-        catalogDescription.setText("");
-        catalogPrice.setText("");
-        catalogModel.getItems().clear();
-        catalogModel.getItems().addAll(models);
-        checkListManufacturer.setText(selectedManufacturer);
-    }
-
-    public void onModelAction() {
-        String selectedManufacturer = checkListManufacturer.getText();
-        String selectedModel = this.catalogModel.getValue();
-        checkListModel.setText(selectedModel);
-        NewDevice newDevice = Database.getSmartphoneByManufacturerAndModel(selectedManufacturer, selectedModel);
-        catalogDescription.setText(newDevice.getDescription());
-        catalogImage.setImage(new Image(new ByteInputStream(newDevice.getImage(), newDevice.getImage().length)));
-        catalogPrice.setText(String.format("Цена: %.2f", newDevice.getPrice()));
-    }
-
-    public void onCheckListSave() {
-        Window owner = checkListSave.getScene().getWindow();
-        try {
-            String lastName = Assert.assertStringNotEmpty(checkListLastName.getText(), "Фамилия");
-            String firstName = Assert.assertStringNotEmpty(checkListFirstName.getText(), "Имя");
-            String middleName = Assert.assertStringNotEmpty(checkListMiddleName.getText(), "Отчество");
-            String address = Assert.assertStringNotEmpty(checkListAddress.getText(), "Адрес");
-            String passport = Assert.assertStringNotEmpty(checkListPassport.getText(), "Паспортные данные");
-            String model = Assert.assertStringNotEmpty(checkListModel.getText(), "Модель");
-            String manufacturer = Assert.assertStringNotEmpty(checkListManufacturer.getText(), "Производитель");
-            Database.addNewOffer(lastName, firstName, middleName, address, passport, model, manufacturer);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return;
-        } catch (IllegalArgumentException e) {
-            AlertHelper.showAlert(Alert.AlertType.ERROR, owner, "Ошибка ввода данных!",
-                    String.format("Пожалуйста заполните поле '%s'", e.getMessage()));
-            return;
-        }
-        AlertHelper.showAlert(Alert.AlertType.INFORMATION, owner, "Сохранено!", "Сохранено");
+    public void onMouseClickingByRow() {
+        Context.currentItem = checkListTable.getItems().get(checkListTable.getSelectionModel().getSelectedIndex());
+        Store.switchTo(Page.MODIFYY_ITEM);
     }
 }

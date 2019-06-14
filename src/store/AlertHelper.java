@@ -1,4 +1,4 @@
-package smarti;
+package store;
 
 import javafx.scene.control.Alert;
 import javafx.stage.Window;

@@ -1,4 +1,4 @@
-package smarti;
+package store;
 
 public enum EmployeeRole {
     ADMIN(0),

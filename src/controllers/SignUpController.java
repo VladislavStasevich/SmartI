@@ -7,7 +7,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Window;
 import models.Employee;
-import smarti.*;
+import store.*;
 
 public class SignUpController {
     @FXML
@@ -36,7 +36,7 @@ public class SignUpController {
             Employee currentEmployee = Database.getEmployeeByLogin(emailField.getText());
             if (passwordField.getText().equals(currentEmployee.getPassword())) {
                 Context.currentEmployee = currentEmployee;
-                Screen.switchTo(Page.DASHBOARD);
+                Store.switchTo(Page.DASHBOARD);
             } else {
                 throw new Exception();
             }
