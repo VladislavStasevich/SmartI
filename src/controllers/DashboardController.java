@@ -31,7 +31,7 @@ public class DashboardController implements Initializable {
     private TableView<models.TableEmployee> employeeTable;
 
     @FXML
-    private Button catalogAddNewItem;
+    private Button storeAddNewItem;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -51,7 +51,7 @@ public class DashboardController implements Initializable {
         }
         name.setText(Context.currentEmployee.toFirstAndLastName());
         if (Context.currentEmployee.getRole() != EmployeeRole.ADMIN.getRole()) {
-            catalogAddNewItem.setVisible(false);
+            storeAddNewItem.setVisible(false);
         }
     }
 
@@ -77,8 +77,9 @@ public class DashboardController implements Initializable {
             } else {
                 iv.setFitHeight(32);
             }
+            String role = Integer.parseInt(te.getRole()) == EmployeeRole.ADMIN.getRole() ? "Администратор" : "Сотрудник";
             employeeTable.getItems().add(new models.TableEmployee(iv, te.getFirstName(), te.getMiddleName(),
-                    te.getLastName(), te.getRole()));
+                    te.getLastName(), role));
         });
     }
 
@@ -94,7 +95,11 @@ public class DashboardController implements Initializable {
     }
 
     public void onMouseClickingByRow() {
-        Context.currentItem = checkListTable.getItems().get(checkListTable.getSelectionModel().getSelectedIndex());
-        Store.switchTo(Page.MODIFYY_ITEM);
+        if (Context.currentEmployee.getRole() == EmployeeRole.ADMIN.getRole()) {
+            try {
+                Context.currentItem = checkListTable.getItems().get(checkListTable.getSelectionModel().getSelectedIndex());
+                Store.switchTo(Page.MODIFYY_ITEM);
+            } catch(Exception ignored) {}
+        }
     }
 }
