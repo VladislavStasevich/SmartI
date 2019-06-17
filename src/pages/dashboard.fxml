@@ -25,12 +25,14 @@
             <Label fx:id="name" prefHeight="32.0" prefWidth="202.0" text="None" />
             <AnchorPane prefWidth="200.0" HBox.hgrow="SOMETIMES">
                 <children>
-                    <Label layoutX="103.0" layoutY="-1.0" text="SmartI" AnchorPane.rightAnchor="376.0" AnchorPane.topAnchor="-1.0">
+                    <Label layoutX="104.0" text="SmartI" AnchorPane.rightAnchor="375.0" AnchorPane.topAnchor="0.0">
                         <font>
                             <Font name="Comic Sans MS" size="25.0" />
                         </font>
                     </Label>
                     <Button mnemonicParsing="false" onAction="#logout" text="Сменить пользователя" textAlignment="CENTER" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="4.0" />
+               <Label fx:id="sessionTimer" alignment="CENTER" layoutX="205.0" layoutY="10.0" prefHeight="17.0" prefWidth="65.0" text="00:00:00" />
+               <Label fx:id="lastSessionTimer" alignment="CENTER" layoutX="283.0" layoutY="10.0" prefHeight="17.0" prefWidth="65.0" text="00:00:00" />
                 </children>
             </AnchorPane>
         </children>
@@ -86,11 +88,11 @@
                                                     <Label text="Данные паспорта" GridPane.halignment="RIGHT" GridPane.rowIndex="4" />
                                                     <Label text="Модель смартфона" GridPane.halignment="RIGHT" GridPane.rowIndex="5" />
                                                     <Label text="Производитель смартфона" GridPane.halignment="RIGHT" GridPane.rowIndex="6" />
-                                                    <TextField fx:id="checkListLastName" prefHeight="25.0" prefWidth="898.0" GridPane.columnIndex="1" />
-                                                    <TextField fx:id="checkListFirstName" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                                    <TextField fx:id="checkListMiddleName" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                    <TextField fx:id="checkListLastName" onKeyTyped="#nameCheck" prefHeight="25.0" prefWidth="898.0" GridPane.columnIndex="1" />
+                                                    <TextField fx:id="checkListFirstName" onKeyTyped="#nameCheck" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                    <TextField fx:id="checkListMiddleName" onKeyTyped="#nameCheck" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                                     <TextField fx:id="checkListAddress" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                                                    <TextField fx:id="checkListPassport" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                                    <TextField fx:id="checkListPassport" onKeyTyped="#passportCheck" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                                                     <TextField fx:id="checkListModel" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                                                     <TextField fx:id="checkListManufacturer" GridPane.columnIndex="1" GridPane.rowIndex="6" />
                                                 </children>

@@ -8,6 +8,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Window;
 import smarti.*;
 import utils.Assert;
@@ -76,11 +77,21 @@ public class DashboardController implements Initializable {
     @FXML
     private Button catalogAddNewDevice;
 
+    @FXML
+    private Label sessionTimer;
+
+    @FXML
+    private Label lastSessionTimer;
+
+    public static SessionTimer session;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         initMainPanel();
         initCatalogTab();
         initEmployeeTab();
+        session = new SessionTimer(sessionTimer, lastSessionTimer);
+        session.start();
     }
 
     private void initMainPanel() {
@@ -113,6 +124,7 @@ public class DashboardController implements Initializable {
 
     public void logout() {
         Context.currentEmployee = null;
+        session.stop();
         Screen.switchTo(Page.SIGN_UP);
     }
 
@@ -184,5 +196,18 @@ public class DashboardController implements Initializable {
             return;
         }
         AlertHelper.showAlert(Alert.AlertType.INFORMATION, owner, "Сохранено!", "Сохранено");
+    }
+
+    public void nameCheck(KeyEvent ke) {
+        System.out.println(ke);
+        if (!Character.isLetter(ke.getCharacter().charAt(0))) {
+            ke.consume();
+        }
+    }
+
+    public void passportCheck(KeyEvent ke) {
+        if (!Character.isLetterOrDigit(ke.getCharacter().charAt(0)) || checkListPassport.getText().length() > 8) {
+            ke.consume();
+        }
     }
 }
