@@ -9,10 +9,14 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
+import javafx.stage.FileChooser;
 import javafx.stage.Window;
 import smarti.*;
 import utils.Assert;
+import utils.CheckPrinter;
 
+import java.io.File;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.List;
@@ -208,6 +212,18 @@ public class DashboardController implements Initializable {
     public void passportCheck(KeyEvent ke) {
         if (!Character.isLetterOrDigit(ke.getCharacter().charAt(0)) || checkListPassport.getText().length() > 8) {
             ke.consume();
+        }
+    }
+
+    public void onCheckClick(MouseEvent event) {
+        if (event.getButton().name().equals("SECONDARY")) {
+            models.TableCheck check = checkListTable.getItems().get(checkListTable.getSelectionModel().getSelectedIndex());
+
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("HTML files (*.html)", "*.html"));
+            File file = fileChooser.showSaveDialog(checkListSave.getScene().getWindow());
+
+            CheckPrinter.print(file.getPath(), check);
         }
     }
 }

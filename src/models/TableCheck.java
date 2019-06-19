@@ -34,4 +34,8 @@ public class TableCheck {
     public String getPassport() {
         return passport;
     }
+
+    public String getLastFirstMiddleName() {
+        return String.format("%s %s %s", this.lastName, this.firstName, this.middleName);
+    }
 }
