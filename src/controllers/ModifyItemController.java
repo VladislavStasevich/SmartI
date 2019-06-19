@@ -6,12 +6,15 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
+import javafx.stage.FileChooser;
 import models.TableItem;
 import store.Context;
 import store.Database;
 import store.Page;
 import store.Store;
+import utils.CheckPrinter;
 
+import java.io.File;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
@@ -42,6 +45,16 @@ public class ModifyItemController implements Initializable {
         type.setText(current.getType());
         count.setText(current.getCount());
         price.setText(current.getPrice());
+    }
+
+    public void onPrint() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("HTML files (*.html)", "*.html"));
+        File file = fileChooser.showSaveDialog(number.getScene().getWindow());
+        if (file != null) {
+            CheckPrinter.print(file.getPath(), new Item(name.getText(), type.getText(),
+                    Double.parseDouble(count.getText()), Double.parseDouble(price.getText())));
+        }
     }
 
     public void onClose() {
