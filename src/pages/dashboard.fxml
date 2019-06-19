@@ -12,26 +12,22 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="1309.0" minHeight="600.0" minWidth="800.0" prefHeight="600.0" prefWidth="1309.0"
-      xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="controllers.DashboardController">
+<VBox maxHeight="-Infinity" maxWidth="1309.0" minHeight="600.0" minWidth="800.0" prefHeight="600.0" prefWidth="1309.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.DashboardController">
     <HBox fillHeight="false" prefWidth="200.0">
         <children>
-            <ImageView fx:id="imageView" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true"/>
-            <Label fx:id="name" prefHeight="32.0" prefWidth="202.0" text="None"/>
+            <ImageView fx:id="imageView" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" />
+            <Label fx:id="name" prefHeight="32.0" prefWidth="202.0" text="None" />
             <AnchorPane prefWidth="200.0" HBox.hgrow="SOMETIMES">
                 <children>
-                    <Label layoutX="265.0" text="Поликлиника № 1337" AnchorPane.rightAnchor="579.0"
-                           AnchorPane.topAnchor="0.0">
+                    <Label layoutX="217.0" text="Поликлиника № 1337" AnchorPane.rightAnchor="627.0" AnchorPane.topAnchor="0.0">
                         <font>
-                            <Font size="23.0"/>
+                            <Font size="23.0" />
                         </font>
                     </Label>
-                    <Button mnemonicParsing="false" onAction="#logout" text="Сменить пользователя"
-                            textAlignment="CENTER" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="4.0"/>
-                    <Button fx:id="storeAddNewItem" layoutX="352.0" layoutY="3.0" mnemonicParsing="false"
-                            onAction="#onAddNewItem" text="Регистрация пациента" AnchorPane.rightAnchor="166.0"
-                            AnchorPane.topAnchor="4.0"/>
+                    <Label fx:id="sessionTimer" alignment="CENTER" layoutX="609.0" layoutY="9.0" prefHeight="17.0" prefWidth="65.0" text="00:00:00" />
+                    <Label fx:id="lastSessionTimer" alignment="CENTER" layoutX="683.0" layoutY="8.0" prefHeight="17.0" prefWidth="65.0" text="00:00:00" />
+                    <Button mnemonicParsing="false" onAction="#logout" text="Сменить пользователя" textAlignment="CENTER" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="4.0" />
+                    <Button fx:id="storeAddNewItem" layoutX="352.0" layoutY="3.0" mnemonicParsing="false" onAction="#onAddNewItem" text="Регистрация пациента" AnchorPane.rightAnchor="166.0" AnchorPane.topAnchor="4.0" />
                 </children>
             </AnchorPane>
         </children>
@@ -42,32 +38,31 @@
                 <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                         <children>
-                            <TableView fx:id="checkListTable" onMouseClicked="#onMouseClickingByRow" prefHeight="538.0"
-                                       prefWidth="1309.0">
+                            <TableView fx:id="checkListTable" onMouseClicked="#onMouseClickingByRow" prefHeight="538.0" prefWidth="1309.0">
                                 <columns>
                                     <TableColumn prefWidth="121.0" text="Номер карточки">
-                                        <properties name="cardNumber"/>
+                                        <properties name="cardNumber" />
                                     </TableColumn>
                                     <TableColumn prefWidth="95.0" text="Имя">
-                                        <properties name="firstName"/>
+                                        <properties name="firstName" />
                                     </TableColumn>
                                     <TableColumn minWidth="8.0" prefWidth="108.0" text="Фамилия">
-                                        <properties name="lastName"/>
+                                        <properties name="lastName" />
                                     </TableColumn>
                                     <TableColumn prefWidth="101.0" text="Отчество">
-                                        <properties name="middleName"/>
+                                        <properties name="middleName" />
                                     </TableColumn>
                                     <TableColumn prefWidth="166.0" text="Пасспортные данные">
-                                        <properties name="passport"/>
+                                        <properties name="passport" />
                                     </TableColumn>
                                     <TableColumn minWidth="0.0" prefWidth="155.0" text="Направление">
-                                        <properties name="referral"/>
+                                        <properties name="referral" />
                                     </TableColumn>
                                     <TableColumn prefWidth="321.0" text="Адрес">
-                                        <properties name="address"/>
+                                        <properties name="address" />
                                     </TableColumn>
                                     <TableColumn minWidth="0.0" prefWidth="236.0" text="Ближайшая запись">
-                                        <properties name="record"/>
+                                        <properties name="record" />
                                     </TableColumn>
                                 </columns>
                             </TableView>
@@ -75,33 +70,26 @@
                     </AnchorPane>
                 </content>
             </Tab>
-            <Tab fx:id="employees" closable="false" disable="true" onSelectionChanged="#onEmployeesChanged"
-                 text="Сотрудники">
+            <Tab fx:id="employees" closable="false" disable="true" onSelectionChanged="#onEmployeesChanged" text="Сотрудники">
                 <content>
                     <AnchorPane minHeight="-Infinity" minWidth="-Infinity">
                         <children>
-                            <TableView fx:id="employeeTable" prefHeight="400.0" prefWidth="800.0"
-                                       AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-                                       AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                            <TableView fx:id="employeeTable" prefHeight="400.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                 <columns>
                                     <TableColumn editable="false" maxWidth="40.0" minWidth="40.0" prefWidth="40.0">
-                                        <properties name="picture"/>
+                                        <properties name="picture" />
                                     </TableColumn>
-                                    <TableColumn editable="false" maxWidth="200.0" minWidth="64.0" prefWidth="128.0"
-                                                 text="Имя">
-                                        <properties name="firstName"/>
+                                    <TableColumn editable="false" maxWidth="200.0" minWidth="64.0" prefWidth="128.0" text="Имя">
+                                        <properties name="firstName" />
                                     </TableColumn>
-                                    <TableColumn editable="false" maxWidth="200.0" minWidth="64.0" prefWidth="128.0"
-                                                 text="Отчество">
-                                        <properties name="middleName"/>
+                                    <TableColumn editable="false" maxWidth="200.0" minWidth="64.0" prefWidth="128.0" text="Отчество">
+                                        <properties name="middleName" />
                                     </TableColumn>
-                                    <TableColumn editable="false" maxWidth="200.0" minWidth="64.0" prefWidth="128.0"
-                                                 text="Фамилия">
-                                        <properties name="lastName"/>
+                                    <TableColumn editable="false" maxWidth="200.0" minWidth="64.0" prefWidth="128.0" text="Фамилия">
+                                        <properties name="lastName" />
                                     </TableColumn>
-                                    <TableColumn editable="false" maxWidth="200.0" minWidth="64.0" prefWidth="128.0"
-                                                 text="Роль">
-                                        <properties name="role"/>
+                                    <TableColumn editable="false" maxWidth="200.0" minWidth="64.0" prefWidth="128.0" text="Роль">
+                                        <properties name="role" />
                                     </TableColumn>
                                 </columns>
                             </TableView>
