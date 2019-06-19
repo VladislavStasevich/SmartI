@@ -52,4 +52,8 @@ public class Patient {
     public String getRecord() {
         return record;
     }
+
+    public String getLastFirstMiddleName() {
+        return String.format("%s %s %s", this.lastName, this.firstName, this.middleName);
+    }
 }
