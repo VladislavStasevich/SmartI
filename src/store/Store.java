@@ -1,6 +1,8 @@
 package store;
 
+import controllers.DashboardController;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
@@ -29,6 +31,10 @@ public class Store extends Application {
         primaryStage.setResizable(false);
         switchTo(Page.SIGN_UP);
         applicationStage.setTitle("Склад № 1");
+        primaryStage.setOnCloseRequest(event -> Platform.runLater(() -> {
+            DashboardController.session.stop();
+            System.exit(0);
+        }));
     }
 
 

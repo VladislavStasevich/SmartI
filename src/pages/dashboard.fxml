@@ -20,11 +20,13 @@
             <Label fx:id="name" prefHeight="32.0" prefWidth="202.0" text="None" />
             <AnchorPane prefWidth="200.0" HBox.hgrow="SOMETIMES">
                 <children>
-                    <Label layoutX="103.0" layoutY="-1.0" text="Склад № 1" AnchorPane.rightAnchor="376.0" AnchorPane.topAnchor="-1.0">
+                    <Label layoutX="-56.0" layoutY="1.0" text="Склад № 1" AnchorPane.rightAnchor="509.0" AnchorPane.topAnchor="1.0">
                         <font>
                             <Font size="23.0" />
                         </font>
                     </Label>
+                    <Label fx:id="sessionTimer" alignment="CENTER" layoutX="175.0" layoutY="10.0" prefHeight="17.0" prefWidth="65.0" text="00:00:00" />
+                    <Label fx:id="lastSessionTimer" alignment="CENTER" layoutX="246.0" layoutY="10.0" prefHeight="17.0" prefWidth="65.0" text="00:00:00" />
                     <Button mnemonicParsing="false" onAction="#logout" text="Сменить пользователя" textAlignment="CENTER" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="4.0" />
                     <Separator layoutX="404.0" layoutY="3.0" orientation="VERTICAL" prefHeight="25.0" prefWidth="16.0" />
                     <Button fx:id="storeAddNewItem" layoutX="352.0" layoutY="3.0" mnemonicParsing="false" onAction="#onAddNewItem" text="Добавить на склад" AnchorPane.rightAnchor="166.0" AnchorPane.topAnchor="4.0" />

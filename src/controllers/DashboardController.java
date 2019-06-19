@@ -7,6 +7,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyEvent;
 import models.TableItem;
 import store.*;
 
@@ -33,10 +34,20 @@ public class DashboardController implements Initializable {
     @FXML
     private Button storeAddNewItem;
 
+    @FXML
+    private Label sessionTimer;
+
+    @FXML
+    private Label lastSessionTimer;
+
+    public static SessionTimer session;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         initMainPanel();
         initEmployeeTab();
+        session = new SessionTimer(sessionTimer, lastSessionTimer);
+        session.start();
     }
 
     private void initMainPanel() {
@@ -63,6 +74,7 @@ public class DashboardController implements Initializable {
 
     public void logout() {
         Context.currentEmployee = null;
+        session.stop();
         Store.switchTo(Page.SIGN_UP);
     }
 
@@ -100,6 +112,13 @@ public class DashboardController implements Initializable {
                 Context.currentItem = checkListTable.getItems().get(checkListTable.getSelectionModel().getSelectedIndex());
                 Store.switchTo(Page.MODIFYY_ITEM);
             } catch(Exception ignored) {}
+        }
+    }
+
+    public void nameCheck(KeyEvent ke) {
+        System.out.println(ke);
+        if (!Character.isLetter(ke.getCharacter().charAt(0))) {
+            ke.consume();
         }
     }
 }
