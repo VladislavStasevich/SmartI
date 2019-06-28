@@ -1,7 +1,7 @@
 package controllers;
 
 import com.sun.xml.internal.messaging.saaj.util.ByteInputStream;
-import dao.NewDevice;
+import dao.NewCar;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -21,6 +21,7 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 
 public class DashboardController implements Initializable {
@@ -37,6 +38,15 @@ public class DashboardController implements Initializable {
     private ComboBox<String> catalogModel;
 
     @FXML
+    private ComboBox<String> catalogEngine;
+
+    @FXML
+    private ComboBox<String> catalogTransmission;
+
+    @FXML
+    private ComboBox<String> catalogYear;
+
+    @FXML
     private ImageView catalogImage;
 
     @FXML
@@ -44,27 +54,6 @@ public class DashboardController implements Initializable {
 
     @FXML
     private Label catalogPrice;
-
-    @FXML
-    private TextField checkListLastName;
-
-    @FXML
-    private TextField checkListFirstName;
-
-    @FXML
-    private TextField checkListMiddleName;
-
-    @FXML
-    private TextField checkListAddress;
-
-    @FXML
-    private TextField checkListPassport;
-
-    @FXML
-    private TextField checkListModel;
-
-    @FXML
-    private TextField checkListManufacturer;
 
     @FXML
     private Tab employees;
@@ -76,9 +65,6 @@ public class DashboardController implements Initializable {
     private TableView<models.TableEmployee> employeeTable;
 
     @FXML
-    private Button checkListSave;
-
-    @FXML
     private Button catalogAddNewDevice;
 
     @FXML
@@ -88,6 +74,21 @@ public class DashboardController implements Initializable {
     private Label lastSessionTimer;
 
     public static SessionTimer session;
+
+    @FXML
+    private TextField catalogName;
+
+    @FXML
+    private TextField catalogLastName;
+
+    @FXML
+    private TextField catalogMiddleName;
+
+    @FXML
+    private TextField catalogPassport;
+
+    @FXML
+    private TextField catalogAddress;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -126,7 +127,7 @@ public class DashboardController implements Initializable {
         catalogManufacturer.getItems().addAll(Database.getManufacturers());
     }
 
-    public void logout() {
+    public void onLogout() {
         Context.currentEmployee = null;
         session.stop();
         Screen.switchTo(Page.SIGN_UP);
@@ -167,30 +168,54 @@ public class DashboardController implements Initializable {
         catalogPrice.setText("");
         catalogModel.getItems().clear();
         catalogModel.getItems().addAll(models);
-        checkListManufacturer.setText(selectedManufacturer);
     }
 
     public void onModelAction() {
-        String selectedManufacturer = checkListManufacturer.getText();
+        String selectedManufacturer = this.catalogManufacturer.getValue();
         String selectedModel = this.catalogModel.getValue();
-        checkListModel.setText(selectedModel);
-        NewDevice newDevice = Database.getSmartphoneByManufacturerAndModel(selectedManufacturer, selectedModel);
-        catalogDescription.setText(newDevice.getDescription());
-        catalogImage.setImage(new Image(new ByteInputStream(newDevice.getImage(), newDevice.getImage().length)));
-        catalogPrice.setText(String.format("Цена: %.2f", newDevice.getPrice()));
+        List<String> engines = Database.getEnginesByManufacturerAndModel(selectedManufacturer, selectedModel);
+        catalogEngine.getItems().clear();
+        catalogEngine.getItems().addAll(engines);
+
+        NewCar newCar = Database.getCarByManufacturerAndModel(selectedManufacturer, selectedModel);
+        catalogDescription.setText(newCar.getDescription());
+        catalogImage.setImage(new Image(new ByteInputStream(newCar.getImage(), newCar.getImage().length)));
+        catalogPrice.setText(String.format("Цена: %.2f", newCar.getPrice()));
+    }
+
+    public void onEngineAction() {
+        String selectedManufacturer = this.catalogManufacturer.getValue();
+        String selectedModel = this.catalogModel.getValue();
+        String selectedEngine = this.catalogEngine.getValue();
+        List<String> transmissions = Database.getTransmissionByManufacturerAndModelAndEngine(selectedManufacturer, selectedModel, selectedEngine);
+        catalogTransmission.getItems().clear();
+        catalogTransmission.getItems().addAll(transmissions);
+    }
+
+    public void onTransmissionAction() {
+        String selectedManufacturer = this.catalogManufacturer.getValue();
+        String selectedModel = this.catalogModel.getValue();
+        String selectedEngine = this.catalogEngine.getValue();
+        String selectedTransmission = this.catalogTransmission.getValue();
+        List<Integer> years = Database.getYearByManufacturerAndModelAndEngineAndTransmission(selectedManufacturer, selectedModel, selectedEngine, selectedTransmission);
+        catalogYear.getItems().clear();
+        catalogYear.getItems().addAll(years.stream().map(String::valueOf).collect(Collectors.toList()));
     }
 
     public void onCheckListSave() {
-        Window owner = checkListSave.getScene().getWindow();
+        Window owner = imageView.getScene().getWindow();
         try {
-            String lastName = Assert.assertStringNotEmpty(checkListLastName.getText(), "Фамилия");
-            String firstName = Assert.assertStringNotEmpty(checkListFirstName.getText(), "Имя");
-            String middleName = Assert.assertStringNotEmpty(checkListMiddleName.getText(), "Отчество");
-            String address = Assert.assertStringNotEmpty(checkListAddress.getText(), "Адрес");
-            String passport = Assert.assertStringNotEmpty(checkListPassport.getText(), "Паспортные данные");
-            String model = Assert.assertStringNotEmpty(checkListModel.getText(), "Модель");
-            String manufacturer = Assert.assertStringNotEmpty(checkListManufacturer.getText(), "Производитель");
-            Database.addNewOffer(lastName, firstName, middleName, address, passport, model, manufacturer);
+            String lastName = Assert.assertStringNotEmpty(catalogName.getText(), "Фамилия");
+            String firstName = Assert.assertStringNotEmpty(catalogLastName.getText(), "Имя");
+            String middleName = Assert.assertStringNotEmpty(catalogMiddleName.getText(), "Отчество");
+            String address = Assert.assertStringNotEmpty(catalogAddress.getText(), "Адрес");
+            String passport = Assert.assertStringNotEmpty(catalogPassport.getText(), "Паспортные данные");
+            String model = Assert.assertStringNotEmpty(catalogModel.getValue(), "Модель");
+            String manufacturer = Assert.assertStringNotEmpty(catalogManufacturer.getValue(), "Производитель");
+            String engine = Assert.assertStringNotEmpty(catalogEngine.getValue(), "Двигатель");
+            String transmission = Assert.assertStringNotEmpty(catalogTransmission.getValue(), "Трансмиссия");
+            String year = Assert.assertStringNotEmpty(catalogYear.getValue(), "Год выпуска");
+            Database.addNewOffer(lastName, firstName, middleName, address, passport, model, manufacturer, engine, transmission, year);
         } catch (SQLException e) {
             e.printStackTrace();
             return;
@@ -209,21 +234,17 @@ public class DashboardController implements Initializable {
         }
     }
 
-    public void passportCheck(KeyEvent ke) {
-        if (!Character.isLetterOrDigit(ke.getCharacter().charAt(0)) || checkListPassport.getText().length() > 8) {
-            ke.consume();
-        }
-    }
-
     public void onCheckClick(MouseEvent event) {
         if (event.getButton().name().equals("SECONDARY")) {
             models.TableCheck check = checkListTable.getItems().get(checkListTable.getSelectionModel().getSelectedIndex());
 
             FileChooser fileChooser = new FileChooser();
             fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("HTML files (*.html)", "*.html"));
-            File file = fileChooser.showSaveDialog(checkListSave.getScene().getWindow());
+            File file = fileChooser.showSaveDialog(imageView.getScene().getWindow());
 
-            CheckPrinter.print(file.getPath(), check);
+            if (file != null) {
+                CheckPrinter.print(file.getPath(), check);
+            }
         }
     }
 }

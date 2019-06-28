@@ -1,8 +1,9 @@
 package controllers;
 
-import dao.NewDevice;
+import dao.NewCar;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -22,12 +23,12 @@ import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
-public class AddNewDeviceController implements Initializable {
+public class AddNewCarController implements Initializable {
 
     private String imagePath;
 
     @FXML
-    ImageView phoneImage;
+    ImageView image;
 
     @FXML
     TextField manufacturer;
@@ -36,26 +37,35 @@ public class AddNewDeviceController implements Initializable {
     TextField model;
 
     @FXML
+    TextField engine;
+
+    @FXML
+    TextField transmission;
+
+    @FXML
+    DatePicker year;
+
+    @FXML
     TextArea description;
 
     @FXML
     TextField price;
 
     private URL getBaseImageUrl() {
-        return AddNewDeviceController.class.getResource("/addImage.png");
+        return AddNewCarController.class.getResource("/addImage.png");
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources)  {
         String imagePath = getBaseImageUrl().toString();
-        phoneImage.setImage(new Image(imagePath));
+        image.setImage(new Image(imagePath));
         this.imagePath = imagePath;
     }
 
     public void onImageViewMouseClick() {
         String imagePath = ImageFileChooser.getImageFilePath();
         if (!imagePath.equals("")) {
-            phoneImage.setImage(new Image(imagePath));
+            image.setImage(new Image(imagePath));
             this.imagePath = imagePath;
         }
     }
@@ -63,15 +73,18 @@ public class AddNewDeviceController implements Initializable {
     public void onSubmit() throws IOException, SQLException, URISyntaxException {
         byte[] fileContent = Files.readAllBytes(Paths.get(new URI(imagePath)));
 
-        NewDevice device = new NewDevice(
+        NewCar device = new NewCar(
                 fileContent,
                 manufacturer.getText(),
                 model.getText(),
+                engine.getText(),
+                transmission.getText(),
+                year.getValue().getYear(),
                 description.getText(),
                 Double.parseDouble(price.getText())
         );
 
-        Database.addNewDevice(device);
+        Database.addNewCar(device);
 
         Screen.switchTo(Page.DASHBOARD);
     }

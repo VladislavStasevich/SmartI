@@ -11,7 +11,7 @@ import java.net.URL;
 public class Screen {
     static private Stage applicationStage;
 
-    public static void initStage(Stage stage) {
+    static void initStage(Stage stage) {
         applicationStage = stage;
         stage.setResizable(false);
         stage.getIcons().add(new Image(Screen.class.getResourceAsStream("/smarti.png")));
@@ -22,8 +22,8 @@ public class Screen {
         stage.show();
     }
 
-    public static void setTitle(String title) {
-        applicationStage.setTitle(title);
+    static void setTitle() {
+        applicationStage.setTitle("Car catalog");
     }
 
     public static void switchTo(Page page) {

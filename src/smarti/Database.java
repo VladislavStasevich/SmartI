@@ -1,6 +1,6 @@
 package smarti;
 
-import dao.NewDevice;
+import dao.NewCar;
 import models.Employee;
 import dao.TableEmployee;
 import models.TableCheck;
@@ -27,6 +27,7 @@ public class Database {
         connect();
         Statement stmt = connection.createStatement();
         stmt.execute(sql);
+        System.out.println("Execute SQL: [" + sql + "]");
         return stmt.getResultSet();
     }
 
@@ -120,17 +121,66 @@ public class Database {
         return models;
     }
 
-    public static NewDevice getSmartphoneByManufacturerAndModel(String manufacturer, String model) {
+    public static List<String> getEnginesByManufacturerAndModel(String manufacturer, String model) {
+        List<String> models = new ArrayList<>();
+        try {
+            ResultSet rs = getExecute(
+                    String.format("SELECT DISTINCT engine FROM Catalog where manufacturer = '%s' and model = '%s'",
+                            manufacturer, model));
+            while (rs.next()) {
+                models.add(rs.getString("engine"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return models;
+    }
+
+    public static List<String> getTransmissionByManufacturerAndModelAndEngine(String manufacturer, String model, String engine) {
+        List<String> models = new ArrayList<>();
+        try {
+            ResultSet rs = getExecute(
+                    String.format("SELECT DISTINCT transmission FROM Catalog where manufacturer = '%s' and model = '%s' and engine = '%s'",
+                            manufacturer, model, engine));
+            while (rs.next()) {
+                models.add(rs.getString("transmission"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return models;
+    }
+
+    public static List<Integer> getYearByManufacturerAndModelAndEngineAndTransmission(String manufacturer, String model, String engine, String transmission) {
+        List<Integer> models = new ArrayList<>();
+        try {
+            ResultSet rs = getExecute(
+                    String.format("SELECT DISTINCT year FROM Catalog where manufacturer = '%s' and model = '%s' and engine = '%s' and transmission = '%s'",
+                            manufacturer, model, engine, transmission));
+            while (rs.next()) {
+                models.add(rs.getInt("year"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return models;
+    }
+
+    public static NewCar getCarByManufacturerAndModel(String manufacturer, String model) {
         try {
             ResultSet rs = getExecute(String.format(
-                    "SELECT description, image, price FROM Catalog where manufacturer = '%s' AND model = '%s'",
+                    "SELECT engine, transmission, year, description, price, image" +
+                            " FROM Catalog where manufacturer = '%s' AND model = '%s'",
                     manufacturer, model
             ));
             rs.next();
-            return new NewDevice(
+            return new NewCar(
                     rs.getBytes("image"),
                     manufacturer,
                     model,
+                    rs.getString("engine"),
+                    rs.getString("transmission"),
+                    rs.getInt("year"),
                     rs.getString("description"),
                     rs.getDouble("price")
             );
@@ -140,30 +190,38 @@ public class Database {
         }
     }
 
-    public static void addNewDevice(NewDevice device) throws SQLException {
-        String sql = "INSERT INTO Catalog(manufacturer, model, description, price, image) VALUES (?, ?, ?, ?, ?)";
+    public static void addNewCar(NewCar device) throws SQLException {
+        String sql = "INSERT INTO Catalog(manufacturer, model, engine, transmission, year, description, price, image)" +
+                " VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         connect();
         PreparedStatement stmt = connection.prepareStatement(sql);
         stmt.setString(1, device.getManufacturer());
         stmt.setString(2, device.getModel());
-        stmt.setString(3, device.getDescription());
-        stmt.setDouble(4, device.getPrice());
-        stmt.setBytes(5, device.getImage());
+        stmt.setString(3, device.getEngine());
+        stmt.setString(4, device.getTransmission());
+        stmt.setInt(5, device.getYear());
+        stmt.setString(6, device.getDescription());
+        stmt.setDouble(7, device.getPrice());
+        stmt.setBytes(8, device.getImage());
         stmt.executeUpdate();
     }
 
-    public static void addNewOffer(String lastName, String firstName, String middleName, String address, String passport, String model, String manufacturer) throws SQLException {
-        String sql = "INSERT INTO \"Check\" (first_name, middle_name, last_name, address, passport, smartphone_id) " +
-                "VALUES (?, ?, ?, ?, ?, (SELECT id FROM Catalog where model = ? AND manufacturer = ?));";
+    public static void addNewOffer(String lastName, String firstName, String middleName, String address, String passport,
+                                   String model, String manufacturer, String engine, String transmission, String year) throws SQLException {
+        String sql = "INSERT INTO \"Check\" (first_name, middle_name, last_name, address, passport, car_id) " +
+                "VALUES (?, ?, ?, ?, ?, (SELECT id FROM Catalog where model = ? AND manufacturer = ? AND engine = ? and transmission = ? and year = ?));";
         connect();
         PreparedStatement stmt = connection.prepareStatement(sql);
-        stmt.setString(1, lastName);
-        stmt.setString(2, firstName);
+        stmt.setString(1, firstName);
+        stmt.setString(2, lastName);
         stmt.setString(3, middleName);
         stmt.setString(4, address);
         stmt.setString(5, passport);
         stmt.setString(6, model);
         stmt.setString(7, manufacturer);
+        stmt.setString(8, engine);
+        stmt.setString(9, transmission);
+        stmt.setString(10, year);
         stmt.executeUpdate();
     }
 }
