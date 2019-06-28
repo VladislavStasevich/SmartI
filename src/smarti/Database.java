@@ -5,6 +5,7 @@ import models.Employee;
 import dao.TableEmployee;
 import models.TableCheck;
 
+import javax.swing.table.TableCellEditor;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -65,6 +66,28 @@ public class Database {
                         rs.getString("address"),
                         rs.getString("passport")
                 ));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return array;
+    }
+
+    public static List<TableCheck> getTableChecksForCustomer(TableCheck customer) {
+        List<TableCheck> array = new ArrayList<>();
+        try {
+            ResultSet rs = getExecute(String.format("SELECT manufacturer, model, engine, transmission, year, price " +
+                    "FROM Catalog WHERE id in (SELECT car_id FROM \"Check\" WHERE passport = '%s')", customer.getPassport()));
+            while (rs.next()) {
+                TableCheck newCheck = customer.makeClone();
+                newCheck.setManufacturer(rs.getString("manufacturer"));
+                newCheck.setModel(rs.getString("model"));
+                newCheck.setEngine(rs.getString("engine"));
+                newCheck.setTransmission(rs.getString("transmission"));
+                newCheck.setYear(String.valueOf(rs.getInt("year")));
+                newCheck.setPrice(String.valueOf(rs.getDouble("price")));
+                array.add(newCheck);
             }
         } catch (SQLException e) {
             e.printStackTrace();

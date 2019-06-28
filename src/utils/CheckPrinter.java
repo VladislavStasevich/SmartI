@@ -4,6 +4,7 @@ import models.TableCheck;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.List;
 
 public class CheckPrinter {
     private static class HtmlDocument {
@@ -41,12 +42,34 @@ public class CheckPrinter {
         }
     }
 
-    public static void print(String path, TableCheck check) {
-        new HtmlDocument(path)
-                .setTitle(String.format("Чек - %s", check.getLastFirstMiddleName()))
-                .line(String.format("%s %s", "               ФИО: ", check.getLastFirstMiddleName()))
-                .line(String.format("%s %s", "             Адрес: ", check.getAddress()))
-                .line(String.format("%s %s", "Пасспортные данные: ", check.getPassport()))
-                .save();
+    public static void print(String path, List<TableCheck> checks) {
+        HtmlDocument doc = new HtmlDocument(path).setTitle(String.format("Чек - %s", checks.get(0).getLastFirstMiddleName()));
+
+        doc.line("-----------------------------------------------------")
+           .line(String.format("%s %s", "               ФИО: ", checks.get(0).getLastFirstMiddleName()))
+           .line(String.format("%s %s", "             Адрес: ", checks.get(0).getAddress()))
+           .line(String.format("%s %s", "Пасспортные данные: ", checks.get(0).getPassport()));
+
+        double totalPrice = 0.0;
+        for (final TableCheck check: checks) {
+            try {
+                totalPrice += Double.valueOf(check.getPrice());
+            } catch (NumberFormatException ignored) {
+            }
+            doc.line("-----------------------------------------------------")
+               .line(String.format("%s %s", "Производитель: ", check.getManufacturer()))
+               .line(String.format("%s %s", "       Модель: ", check.getModel()))
+               .line(String.format("%s %s", "    Двигатель: ", check.getEngine()))
+               .line(String.format("%s %s", "  Трансмиссия: ", check.getTransmission()))
+               .line(String.format("%s %s", "  Год выпуска: ", check.getYear()))
+               .line(String.format("%s %s", "         Цена: ", check.getPrice()));
+        }
+
+        if (checks.size() > 1) {
+            doc.line("=====================================================");
+            doc.line(String.format("%s %d", "Итоговая цена: ", (int) totalPrice));
+        }
+
+        doc.save();
     }
 }

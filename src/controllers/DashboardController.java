@@ -12,6 +12,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
 import javafx.stage.Window;
+import models.TableCheck;
 import smarti.*;
 import utils.Assert;
 import utils.CheckPrinter;
@@ -19,8 +20,10 @@ import utils.CheckPrinter;
 import java.io.File;
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.HashSet;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 
@@ -153,7 +156,14 @@ public class DashboardController implements Initializable {
         checkListTable.getItems().clear();
         checkListTable.getColumns().forEach(col ->
                 col.setCellValueFactory(new PropertyValueFactory<>((String)col.getProperties().get("name"))));
-        Database.getTableCheck().forEach(tableCheck -> checkListTable.getItems().add(tableCheck));
+        Set<String> passport = new HashSet<>();
+        Database.getTableCheck().forEach(tableCheck -> {
+            if (passport.contains(tableCheck.getPassport())) {
+                return;
+            }
+            passport.add(tableCheck.getPassport());
+            checkListTable.getItems().add(tableCheck);
+        });
     }
 
     public void onAddNewDevice() {
@@ -237,13 +247,13 @@ public class DashboardController implements Initializable {
     public void onCheckClick(MouseEvent event) {
         if (event.getButton().name().equals("SECONDARY")) {
             models.TableCheck check = checkListTable.getItems().get(checkListTable.getSelectionModel().getSelectedIndex());
-
+            List<TableCheck> list = Database.getTableChecksForCustomer(check);
             FileChooser fileChooser = new FileChooser();
             fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("HTML files (*.html)", "*.html"));
             File file = fileChooser.showSaveDialog(imageView.getScene().getWindow());
 
             if (file != null) {
-                CheckPrinter.print(file.getPath(), check);
+                CheckPrinter.print(file.getPath(), list);
             }
         }
     }
